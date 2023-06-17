@@ -4,9 +4,6 @@
 
 @section('content')
 <div class="container">
-    @if(Session::has('success'))
-    <div class="alert alert-success">{{Session::get('success')}}</div>
-    @endif
 
     <!-- ================================ -->
     <form action="{{route('categories')}}" method="post">
@@ -29,6 +26,12 @@
     </form>
 
     <!-- ====================================== -->
+    @if(Session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Success!</strong>{{Session('success')}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
 
     <div class="p-4 p-md-5 mb-4 mt-4 rounded text-bg-light  bg-light">
         <div class="col-md-6 px-0">

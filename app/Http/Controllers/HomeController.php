@@ -25,7 +25,6 @@ class HomeController extends Controller
     {
         // Find the item by ID and delete it
         $item = Posts::find($id);
-        dd($item);
         $item->delete();
 
         // Redirect to the appropriate page or perform any other action

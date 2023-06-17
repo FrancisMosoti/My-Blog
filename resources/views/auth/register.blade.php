@@ -15,12 +15,9 @@
         <div class="col-12 col-md-9 col-lg-7 col-xl-6">
           <div class="card my-3" style="border-radius: 15px;">
             <div class="card-body p-5">
-              <!-- @if(Session::has('success'))
+              @if(Session::has('success'))
               <div class="alert alert-success">{{Session::get('success')}}</div>
               @endif
-              @if(Session::has('fail'))
-              <div class="alert alert-danger">{{Session::get('fail')}}</div>
-              @endif -->
               <h2 class="text-uppercase text-center mb-4">Create an account</h2>
 
               <form method="post" action="{{route('register')}}">
@@ -52,12 +49,13 @@
                   @error('password_confirmation')<div class="text-danger">{{ $message }}</div>@enderror
                 </div>
 
-                <!-- <div class="form-check d-flex justify-content-center mb-3">
-                  <input class="form-check-input me-2" type="checkbox" value="" id="check" />
+                <div class="form-check d-flex justify-content-center mb-3">
+                  <input class="form-check-input me-2 @error('terms') is-invalid @enderror" value="{{ old('terms')?old('terms'):'' }}" type="checkbox" name="terms"/>
                   <label class="form-check-label" for="check">
-                    I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
+                    I agree to <a href="#!" class="text-body"><u>Terms and conditions</u></a>
                   </label>
-                </div> -->
+                  @error('terms')<div class="text-danger">{{ $message }}</div>@enderror
+                </div>
 
                 <div class="d-flex justify-content-center">
                   <button type="submit"

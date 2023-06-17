@@ -9,6 +9,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\commentsController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\passwordController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,5 +69,9 @@ Route::post('/logout',[LogoutController::class, 'logout'])->name('logout');
 Route::get('/logout',[LogoutController::class, 'logout']);
 
 
-
-
+// reset password
+Route::middleware(['guest'])->group(function (){
+    Route::get('/forgot-password', [PasswordController::class, 'index'])->name('password.request');
+    Route::post('/forgot-password', [PasswordController::class, 'forgot'])->name('password.forgot');
+    Route::get('/reset-password/{token}',[PasswordController::class, 'reset'] )->name('password.reset');
+});

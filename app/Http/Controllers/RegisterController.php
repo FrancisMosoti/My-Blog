@@ -27,7 +27,8 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255|min:3',
             'email' => 'required|email',
             'phone' => ['required','numeric', new PhoneValidation()],
-            'password' => ['required','confirmed']
+            'password' => ['required','confirmed'],
+            'terms' => ['required']
         ]);
 
         User::create([
@@ -37,7 +38,7 @@ class RegisterController extends Controller
             'password' => $request->input('password')
         ]);
 
-        return redirect('/home');
+        return redirect('/login')->with('success', 'Registration Successful. Now Login');
 
     } 
 
