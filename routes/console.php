@@ -2,6 +2,8 @@
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\InspireMe;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,5 +17,6 @@ use Illuminate\Support\Facades\Artisan;
 */
 
 Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
+    // $this->comment(Inspiring::quote());
+    Notification::route('slack', config('notification.inspire'))->notify(new InspireMe());
 })->purpose('Display an inspiring quote');

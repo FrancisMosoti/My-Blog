@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Posts;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comments extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
         /**
      * The attributes that are mass assignable.
@@ -23,7 +26,7 @@ class Comments extends Model
      */
     public function post()
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(Posts::class);
     }
 
     public function user()

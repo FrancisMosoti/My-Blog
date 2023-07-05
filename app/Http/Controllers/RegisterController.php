@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Models\User;
 use App\Rules\PhoneValidation;
+use App\Notifications\RegisterSuccess;
+use Illuminate\Support\Facades\Notification;
 
 class RegisterController extends Controller
 {
@@ -37,6 +39,8 @@ class RegisterController extends Controller
             'phone' => validatePhone($request->input('phone'))['phone'],
             'password' => $request->input('password')
         ]);
+
+        Notification::route('slack', config('notification.register'))->notify(new RegisterSuccess());
 
         return redirect('/login')->with('success', 'Registration Successful. Now Login');
 

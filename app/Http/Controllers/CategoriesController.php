@@ -8,7 +8,6 @@ use App\Models\Categories;
 class CategoriesController extends Controller
 {
 
-
     public function store(Request $request){
         // validation
         $request->validate([
@@ -24,6 +23,18 @@ class CategoriesController extends Controller
 
         return back();
     }
+
+    public function destroy($id)
+    {
+        // Find the item by ID and delete it
+        $item = Categories::find($id);
+        $item->delete();
+
+        // Redirect to the appropriate page or perform any other action
+        return redirect()->back()->with('success', 'Category has been deleted successfully.');
+    }
+
+
 
 
 }

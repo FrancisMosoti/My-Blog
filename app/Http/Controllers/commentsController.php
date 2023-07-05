@@ -26,4 +26,12 @@ class commentsController extends Controller
 
         return back();
     }
+
+    public function destroy($id)
+    {
+        $comments = Comments::findOrFail($id);
+        $comments->delete();
+
+        return redirect()->back()->with('success', 'Comment deleted successfully');
+    }
 }

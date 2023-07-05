@@ -14,15 +14,23 @@
             </div>
             @endif
             <h3 class="card-header bg-primary">{{$post->title}}</h3>
+            <div class="mt-3 mx-3">
+                @if($post->user->profile_photo !== null)
+                <img src="{{asset('storage/uploads/'.$post->user->profile_photo)}}" alt=""
+                    class="mx-2 rounded-circle border border-primary" width="50px" height="50px">
+                @else
+                <img src="{{asset('avatar2.png')}}" alt="" class="mx-2 rounded-circle border border-primary"
+                    width="50px" height="50px">
+                @endif
+                Posted By <span class="text-primary">{{ $post->user->name}} on {{$post->created_at}}</span>
+            </div>
             <div class="mb-3">
-            <img src="{{asset('storage/'.$post->post_image)}}" class="w-100 mt-3" alt="">
+                <img src="{{asset('storage/'.$post->post_image)}}" class="w-100 mt-3" alt="">
             </div>
             <div class="mb-3 mx-3">
                 {!! $post->body!!}
             </div>
-            <div class="mb-3 mx-3">
-                Posted By <span class="text-primary">{{ $post->user->name}}</span>
-            </div>
+
             <hr>
             <form action="{{route('comment', ['post' => $post->id])}}" method="post">
                 @csrf
@@ -39,9 +47,30 @@
             <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-start mb-2">
                     <div class="ms-2 me-auto">
-                        <div class="fw-bold">{{$comment->user->name}}</div>
+                        <div class="fw-bold">
+                            @if($comment->user->profile_photo !== null)
+                            <img src="{{asset('storage/uploads/'.$comment->user->profile_photo)}}" alt=""
+                                class="mx-2 rounded-circle border border-primary" width="50px" height="50px">
+                            @else
+                            <img src="{{asset('avatar2.png')}}" alt="" class="mx-2 rounded-circle border border-primary"
+                                width="50px" height="50px">
+                            @endif
+                            {{$comment->user->name}}
+                        </div>
                         {{$comment->body}}
                     </div>
+                    <span class=" mx-3">
+                        <form action="{{ route('comment.delete', $comment->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+
+
+                            <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Are you Sure to Delete this?')">
+                                <ion-icon name="trash-outline"></ion-icon>
+                            </button>
+                        </form>
+                    </span>
                     <span class="badge bg-primary rounded-pill">{{$comment->created_at->diffForHumans()}}</span>
                 </li>
                 @endforeach

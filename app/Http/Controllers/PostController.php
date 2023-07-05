@@ -8,6 +8,9 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Posts;
 use App\Models\User;
 use App\Models\Categories;
+use App\Models\Comments;
+use App\Notifications\PostsAlert;
+use Illuminate\Support\Facades\Notification;
 
 class PostController extends Controller
 {
@@ -27,14 +30,17 @@ class PostController extends Controller
         // validation
         $request->validate([
             'title' => 'required|max:255',
-            'body' => 'required|max:1000',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'body' => 'required|max:2000',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'category' => 'required',
         ], ['body.required' => 'A body of a post is required']);
 
 
-        
-        $imagePath = $request->file('image')->store('uploads', 'public');
+        $imagePath = '';
+        if($request->hasFile('image')){
+
+            $imagePath = $request->file('image')->store('uploads', 'public');
+        }
         
 
         Posts::create([
@@ -45,6 +51,9 @@ class PostController extends Controller
             'user_id' => $request->User()->id
         ]);
 
+
+        Notification::route('slack', config('notification.register'))->notify(new PostsAlert());
+
         session()->flash('success', 'Your post has been saved.');
 
         return back();
@@ -52,8 +61,12 @@ class PostController extends Controller
     } 
 
     public function show($post)
+
     {
-        $post = Posts::with('comments')->find($post);
+
+        $post = Posts::with(['comments' => function ($query){
+            $query->orderBy('created_at', 'desc');
+        }])->find($post);
 
         if(is_null($post)){
             return response("Post not found", 404);
@@ -65,7 +78,7 @@ class PostController extends Controller
 
     public function destroy($id)
     {
-        $post = Posts::findOrFail($id);
+        $post = Posts::with('comments')->findOrFail($id);
         $post->delete();
 
         return redirect('home')->with('success', 'Post deleted successfully');

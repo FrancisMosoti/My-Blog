@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('body');
             $table->string('post_image')->nullable();
+            $table->string('category')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

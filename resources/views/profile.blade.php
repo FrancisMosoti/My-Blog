@@ -13,10 +13,17 @@
             </div>
             @endif
             <h3 class="card-header">My Profile</h3>
+            
             <div class="row my-3">
                 <div class="col-md-4">
+                @if(Auth::User()->profile_photo !== null)
                     <img src="{{asset('storage/uploads/'.Auth::User()->profile_photo)}}" class="img-fluid rounded"
                         alt="Profile Photo " width="300px">
+                @else
+                <img src="{{asset('avatar2.png')}}" class="img-fluid rounded"
+                        alt="Profile Photo " width="300px">
+                @endif
+
                 </div>
                 <div class="col-md-8 p-3">
                     <p>Name: {{ Auth::User()->name }}</p>

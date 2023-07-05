@@ -40,6 +40,7 @@
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><a class="dropdown-item" href="#">All Posts</a></li>
                                 @foreach($categories as $category)
                                 <li><a class="dropdown-item" href="#">{{$category->categories}}</a></li>
                                 @endforeach
@@ -75,6 +76,11 @@
 
     </footer>
     </footer>
+
+    <!-- icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
 </body>
 
 </html>

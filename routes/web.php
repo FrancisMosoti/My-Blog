@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
@@ -10,6 +12,8 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\commentsController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\passwordController;
+use App\Http\Controllers\AdminController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,16 +29,27 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::controller(LoginController::class)->group(function () {
+    // Your routes here
+    Route::get('/login', 'view')->name('login');
+    Route::post('/login', 'login')->name('login');
+});
+
+
+Route::middleware(['DetectForbiddenWords', 'auth', 'detectSpam'])->group(function (){
+    Route::post('/AddPost/{user}',[PostController::class, 'store'])->name('add');
+    Route::get('/AddPost/{user}',[PostController::class, 'add'])->name('add');
+    
+});
+
+Route::controller(RegisterController::class)->group(function () {
+    // Your routes here
+    Route::get('/register', 'view');
+    Route::post('/register', 'store')->name('register');
+});
 
 
 
-Route::get('/register',[RegisterController::class, 'view']);
-Route::post('/register',[RegisterController::class, 'store'])->name('register');
-
-
-
-Route::get('/login',[LoginController::class, 'view'])->name('login');
-Route::post('/login',[LoginController::class, 'login'])->name('login');
 
 Route::middleware(['auth'])->group(function (){
     Route::post('/AddPost/{user}',[PostController::class, 'store'])->name('add');
@@ -43,12 +58,10 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/post/{post}',[PostController::class, 'show'])->name('show');
 
     Route::post('/Comments/{post}',[commentsController::class, 'store'])->name('comment');
+    Route::delete('/Comments/delete/{id}',[commentsController::class, 'destroy'])->name('comment.delete');
 
 
     Route::get('/home',[HomeController::class, 'index'])->name('back');
-
-    
-    Route::post('/home',[CategoriesController::class, 'store'])->name('categories');
 
 
     Route::get('/profile/{user}',[HomeController::class, 'profile'])->name('profile');
@@ -60,6 +73,7 @@ Route::middleware(['auth'])->group(function (){
 
 
     // file upload for user
+    
 
 });
 
@@ -75,3 +89,34 @@ Route::middleware(['guest'])->group(function (){
     Route::post('/forgot-password', [PasswordController::class, 'forgot'])->name('password.forgot');
     Route::get('/reset-password/{token}',[PasswordController::class, 'reset'] )->name('password.reset');
 });
+
+    // admin register
+    Route::get('/admin/register',[AdminController::class, 'register'])->name('admin.register');
+    Route::post('/admin/register',[AdminController::class, 'store']);
+    Route::get('/admin/login',[AdminController::class, 'login'])->name('admin.login');
+
+
+
+
+
+    // Other admin-only routes
+
+    // comments
+    Route::get('/admin/comments',[AdminController::class, 'comment'])->name('admin.comments');
+    Route::delete('/comment/delete/{id}', [commentsController::class, 'destroy'])->name('comments.destroy');
+    
+    // admin
+    
+
+    Route::get('/admin/posts',[AdminController::class, 'posts'])->name('admin.posts');
+    Route::post('/admin',[CategoriesController::class, 'store'])->name('categories');
+    Route::delete('/categories/delete/{id}',[CategoriesController::class, 'destroy'])->name('categories.destroy');
+ 
+
+
+    Route::middleware(['auth'])->prefix('admin')->group(function () {
+
+        Route::get('/admin/dash',[AdminController::class, 'index'])->name('admin.index');
+        Route::get('/admin/side',[AdminController::class, 'side'])->name('admin.side');
+        Route::delete('/user/delete/{id}', [AdminController::class, 'destroy'])->name('user.destroy');
+    });

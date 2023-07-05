@@ -50,12 +50,13 @@
                 </div>
 
                 <div class="form-check d-flex justify-content-center mb-3">
-                  <input class="form-check-input me-2 @error('terms') is-invalid @enderror" value="{{ old('terms')?old('terms'):'' }}" type="checkbox" name="terms"/>
+                  <input class="form-check-input me-2 @error('terms') is-invalid @enderror" value="on" type="checkbox" name="terms"/>
                   <label class="form-check-label" for="check">
-                    I agree to <a href="#!" class="text-body"><u>Terms and conditions</u></a>
+                  <a href="#!" class="text-primary">I agree to <u>Terms and conditions</u></a>
                   </label>
-                  @error('terms')<div class="text-danger">{{ $message }}</div>@enderror
+                  
                 </div>
+                @error('terms')<div class="text-danger text-center">{{ $message }}</div>@enderror
 
                 <div class="d-flex justify-content-center">
                   <button type="submit"
@@ -63,7 +64,7 @@
                 </div>
 
                 <p class="text-center text-muted mt-2 mb-0">Have already an account? <a href="{{route('login')}}"
-                    class="fw-bold text-body"><u>Login here</u></a></p>
+                    class="fw-bold text-primary"><u>Login here</u></a></p>
 
               </form>
 

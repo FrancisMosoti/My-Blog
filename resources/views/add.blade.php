@@ -25,7 +25,7 @@
                 </div>
                 <div class="mb-3">
                     <div class="input-group">
-                        <input type="file" name="image" class="form-control @error('category') is-invalid @enderror" id="inputGroupFile04"
+                        <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" id="inputGroupFile04"
                             aria-describedby="inputGroupFileAddon04" aria-label="Upload" value="{{ old('image')?old('image'):'' }}">
                     </div>
                     @error('image')<div class="text-danger">{{ $message }}</div>@enderror
@@ -43,7 +43,7 @@
                 <div class="mb-2">
                     <label for="body" class="form-label">Body Content</label>
                     <textarea name="body" class="form-control @error('body') is-invalid @enderror" id="body"
-                        value="{{ old('body')?old('body'):'' }}" rows="3" value="{{ old('body')?old('body'):'' }}"></textarea>
+                        value="{{ old('body')?old('body'):'' }}" rows="3""></textarea>
                     @error('body')<div class="text-danger">{{ $message }}</div>@enderror
                 </div>
                 <div class="mb-3">
